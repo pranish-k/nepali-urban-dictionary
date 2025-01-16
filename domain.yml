@@ -1,0 +1,24 @@
+version: "3.0"
+intents:
+  - greet
+  - lookup_word
+
+entities:
+  - title
+
+slots:
+  word:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: null
+
+
+responses:
+  utter_greet:
+    - text: "Hi, welcome to the Nepalese Urban Dictionary. What word do you want to understand today?"
+
+actions:
+  - action_lookup_word

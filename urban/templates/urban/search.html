@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/search_style.css' %}" rel="stylesheet" type="text/css">
+    <title>Nepali Urban Dictionary</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h3 id="title">Nepali Urban Dictionary</h3>
+            <p id="subtitle">Understand what the next-gen Nepali youth is saying.</p>
+        </header>
+
+        <div class="search-form">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        {% if random_word %}
+        <div class="random-word-container">
+            <h4 class="word-title"><a href="{% url 'define' random_word.title|slugify %}">{{ random_word.title }}</a></h4>
+            <p class="word-meaning">Meaning: {{ random_word.meaning }}</p>
+            {% if random_word.sentence %}
+            <p class="word-sentence">Example Sentence: {{ random_word.sentence }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if words %}
+            <div class="search-results">
+                {% for word in words %}
+                    <div class="word-entry">
+                        <h4 class="word-title"><a href="{% url 'define' word.title|slugify %}">{{ word.title }}</a></h4>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

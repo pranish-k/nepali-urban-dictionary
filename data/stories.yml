@@ -1,0 +1,11 @@
+version: "3.0"
+stories:
+  - story: greet and ask for lookup
+    steps:
+       - intent: greet
+       - action: utter_greet
+
+  - story: lookup a word
+    steps:
+       - intent: lookup_word
+       - action: action_lookup_word

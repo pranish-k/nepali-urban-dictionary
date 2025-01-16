@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/home_style.css' %}" rel="stylesheet" type="text/css">
+    <title>Nepali Urban Dictionary</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h3 id="title">Nepali Urban Dictionary</h3>
+            <p id="subtitle">Understand what the next-gen Nepali youth is saying.</p>
+        </header>
+
+        <div class="word-list">
+            {% for word in words %}
+                <div class="word-entry">
+                    <h4 class="word-title">{{ word.title }}</h4>
+                    <p class="word-meaning"><strong>Meaning:</strong> {{ word.meaning }}</p>
+                    {% if word.sentence %}
+                        <p class="word-sentence"><strong>Sentence:</strong> {{ word.sentence }}</p>
+                    {% endif %}
+                </div>
+                <hr class="divider">
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+
+

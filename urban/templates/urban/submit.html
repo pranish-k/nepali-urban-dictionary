@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/submit_style.css' %}" rel="stylesheet" type="text/css">
+    <title>Submit</title>
+</head>
+
+<body>
+    <h3 id="heading">Define a Word.</h3>
+
+    <form method="POST" action="/submit/">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="Submit" value="Submit">
+    </form>
+</body>
+</html>
