@@ -4,7 +4,7 @@
 *.pyd
 __pycache__/
 
-# Virtual environment
+# Virtual Environment
 .venv/
 
 # VSCode settings
@@ -15,35 +15,47 @@ __pycache__/
 *.sqlite3-shm
 *.sqlite3-wal
 
-# Rasa files
-.rasa/
-*.yml
+# Django migration files
+**/migrations/*.py
+**/migrations/*.pyc
 
-# Logs
+# Static and media files
+/urban/static/
+/urban/media/
+
+# Config and sensitive files
+config.yml
+credentials.yml
+domain.yml
+endpoints.yml
+
+# Logs and temporary files
 *.log
 logs/
-
-# Static files
-/urban/static/
-
-# Test files
-/tests/
-
-# IDE settings
-.idea/
-.DS_Store
-
-# Temporary files
 *.tmp
 *.swp
 *.swo
 *.bak
 
-# Coverage reports
+# IDE settings and system files
+.idea/
+.DS_Store
+
+# Requirements files
+!requirements.txt
+
+# Exclude everything in the data folder except README.md (if exists)
+data/*
+!data/README.md
+
+# Test and coverage reports
+/tests/
 htmlcov/
 *.coverage
+coverage.xml
 
-# Other files
-.env
-config.yml
-credentials.yml
+# Actions folder (if not required for Git)
+actions/
+
+# Ignore generated documentation
+docs/_build/
