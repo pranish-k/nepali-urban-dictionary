@@ -1,19 +1,42 @@
+{% load static %}
+
 <!DOCTYPE html>
-   <html lang="en">
-   <head>
-       <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <link href="{% static 'css/chatbot_style.css' %}" rel="stylesheet" type="text/css">
-       <title>Chatbot - Nepali Urban Dictionary</title>
-   </head>
-   <body>
-       <div id="chat-container">
-           <div id="chat-box">
-               <div id="messages"></div>
-               <input type="text" id="user-input" placeholder="Type your message here...">
-               <button onclick="sendMessage()">Send</button>
-           </div>
-       </div>
-       <script src="{% static 'js/chatbot.js' %}"></script>
-   </body>
-   </html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - Nepali Urban Dictionary</title>
+</head>
+<body>
+    <h3 id="heading">Ask the Chatbot</h3>
+    <form id="chatbot-form" method="POST">
+        {% csrf_token %}
+        <input type="text" name="user_input" placeholder="Ask about a word..." required>
+        <input type="submit" value="Ask">
+    </form>
+
+    <div id="response-box"></div>
+
+    <script>
+        document.getElementById('chatbot-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const userInput = document.querySelector('input[name="user_input"]').value;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("/chatbot/", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken
+                },
+                body: `user_input=${encodeURIComponent(userInput)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response-box').innerHTML = `<p>${data.response}</p>`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

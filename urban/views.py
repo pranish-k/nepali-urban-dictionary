@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 import random
 import requests
-
-
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 def all_words(request):
     words = Word.objects.all()
@@ -50,5 +50,30 @@ def define(request, word_slug):
     context = {'word': word}
     return render(request, 'urban/define.html', context)
 
+from django.http import JsonResponse
+from .models import Word
+from .chatbot_api import query_openai_api
+
 def chatbot(request):
-    return render(request, 'urban/chatbot.html')
+    if request.method == "POST":
+        user_input = request.POST.get("user_input")
+        if user_input:
+            word_entry = Word.objects.filter(title__iexact=user_input).first()
+            if word_entry:
+                response = f"**{word_entry.title}**: {word_entry.meaning}"
+                if word_entry.sentence:
+                    response += f"<br>Example: {word_entry.sentence}"
+            else:
+                try:
+                    response = query_openai_api(user_input)
+                except Exception as e:
+                    response = f"Error querying API: {str(e)}"
+
+            return JsonResponse({"response": response})
+        else:
+            return JsonResponse({"response": "Please enter a word to search."})
+
+    return render(request, "urban/chatbot.html")
+
+
+
